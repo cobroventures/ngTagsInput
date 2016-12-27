@@ -171,7 +171,8 @@ tagsInput.directive('autoComplete', function($document, $timeout, $sce, $q, tags
             };
         },
         link: function(scope, element, attrs, tagsInputCtrl) {
-            var hotkeys = [KEYS.enter, KEYS.tab, KEYS.escape, KEYS.up, KEYS.down, KEYS.comma],
+            var hotkeys = [KEYS.enter, KEYS.tab, KEYS.escape, KEYS.up, KEYS.down,
+                           KEYS.comma, KEYS.space],
                 suggestionList = scope.suggestionList,
                 tagsInput = tagsInputCtrl.registerAutocomplete(),
                 options = scope.options,
@@ -254,7 +255,10 @@ tagsInput.directive('autoComplete', function($document, $timeout, $sce, $q, tags
                             suggestionList.reset();
                             handled = true;
                         }
-                        else if (key === KEYS.enter || key === KEYS.tab || (options.tagsInput.addOnComma && key === KEYS.comma)) {
+                        else if (key === KEYS.enter ||
+                                 key === KEYS.tab ||
+                                 (options.tagsInput.addOnComma && key === KEYS.comma) ||
+                                 (options.tagsInput.addOnSpace && key === KEYS.space)) {
                             handled = scope.addSuggestion();
                         }
                     }
