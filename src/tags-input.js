@@ -272,6 +272,7 @@ tagsInput.directive('tagsInput', function($timeout, $document, $window, $q, tags
             };
 
             focusInput = function() {
+                console.log('Focusing without timeout');
                 input[0].focus();
             };
 
