@@ -331,6 +331,9 @@ tagsInput.directive('tagsInput', function($timeout, $document, $window, $q, tags
                     keydown: function($event) {
                         events.trigger('input-keydown', $event);
                     },
+                    keyup: function($event) {
+                        events.trigger('input-keyup', $event);
+                    },
                     focus: function() {
                         if (scope.hasFocus) {
                             return;
@@ -411,6 +414,40 @@ tagsInput.directive('tagsInput', function($timeout, $document, $window, $q, tags
                     }
                     element.triggerHandler('blur');
                     setElementValidity();
+                })
+                .on('input-keyup', function(event) {
+                  var key = event.keyCode,
+                    addKeys = {}, shouldAdd, newTagText = scope.newTag.text(), lastChar;
+
+                  // Android doesn't send the proper key for anything.  It's always 229
+                  if ((key === 229) && (scope.text !== undefined)) {
+                    lastChar = scope.text[newTagText.length - 1];
+                    if (options.addOnSpace && lastChar === ' ') {
+                      key = KEYS.space;
+                      newTagText = newTagText.slice(0, -1);  // Remove space
+                    } else if (options.addOnComma && lastChar === ',') {
+                      key = KEYS.comma;
+                      newTagText = newTagText.slice(0, -1);  // Remove comma
+                    }
+                  }
+
+                  if (tiUtil.isModifierOn(event) || hotkeys.indexOf(key) === -1) {
+                    return;
+                  }
+
+                  addKeys[KEYS.enter] = options.addOnEnter;
+                  addKeys[KEYS.comma] = options.addOnComma;
+                  addKeys[KEYS.space] = options.addOnSpace;
+
+                  shouldAdd = !options.addFromAutocompleteOnly && addKeys[key];
+
+                  if (shouldAdd) {
+                    tagList.addText(newTagText);
+                  }
+
+                  if (shouldAdd) {
+                    event.preventDefault();
+                  }
                 })
                 .on('input-keydown', function(event) {
                     var key = event.keyCode,

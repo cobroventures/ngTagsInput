@@ -23,6 +23,7 @@
            ng-model="newTag.text"
            ng-model-options="{getterSetter: true}"
            ng-keydown="eventHandlers.input.keydown($event)"
+           ng-keyup="eventHandlers.input.keyup($event)"
            ng-focus="eventHandlers.input.focus($event)"
            ng-blur="eventHandlers.input.blur($event)"
            ng-paste="eventHandlers.input.paste($event)"
