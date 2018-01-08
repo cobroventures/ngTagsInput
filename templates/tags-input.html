@@ -30,7 +30,7 @@
            ng-trim="false"
            ng-class="{
              'invalid-tag': newTag.invalid,
-             'bu-input--empty': options.isDynamicPlaceholder && (!tagList.items || !tagList.items.length) && !newTag.text
+             'bu-input--empty': options.isDynamicPlaceholder && (!tagList.items || !tagList.items.length) && (!newTag || !newTag.text())
            }"
            ng-disabled="disabled"
            ti-bind-attrs="{
