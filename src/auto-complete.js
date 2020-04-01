@@ -257,8 +257,24 @@ tagsInput.directive('autoComplete', function($document, $timeout, $sce, $q, tags
                         }
                         else if (key === KEYS.enter ||
                                  key === KEYS.tab ||
-                                 (options.tagsInput.addOnComma && key === KEYS.comma) ||
-                                 (options.tagsInput.addOnSpace && key === KEYS.space)) {
+                                 (options.tagsInput.addOnComma && key === KEYS.comma)) {
+                            // This will choose the first selecction in the auto complete
+                            // list
+                            handled = scope.addSuggestion();
+                        }
+                        else if ((options.tagsInput.addOnSpace && key === KEYS.space)) {
+                            // When the user presses space, we actually want to tokenize the string as is.
+                            // In other words, we will not choose the first selection, but instead
+                            // use the string as is.
+                            // Reset the suggestion list so that no suggestion is selected
+                            // A similar behavior is seen on:
+                            // (1) Gmail when entering addresses,
+                            // (2) Twitter when tweeting a message and trying to tag someone
+                            // (3) Facebook when typing a message and trying to tag someone
+                            // See NGM-5556
+                            suggestionList.reset();
+
+                            // Add/tokenize the suggestion
                             handled = scope.addSuggestion();
                         }
                     }
