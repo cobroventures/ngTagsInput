@@ -17,9 +17,18 @@
     </div>
     <!-- The dynamic placeholder (one that will disappear) should
          only be displayed if the are no input tags already present -->
+    <!-- new password seems to be one way to prevent autocomplete (NGM-8284)
+         https://stackoverflow.com/questions/15738259/disabling-chrome-autofill
+         for chrome and edge
+    -->
+    <!-- In order to not show the autocomplete suggestions on safari and firefox, we have
+         to set the name to contain the string search
+         https://stackoverflow.com/questions/22661977/disabling-safari-autofill-on-usernames-and-passwords
+    -->
     <input class="input"
+           name="notInSearch"
            placeholder="{{ ((tagList.items && tagList.items.length) || !options.isDynamicPlaceholder) ? '' : options.placeholder}}"
-           autocomplete="off"
+           autocomplete="new-password"
            ng-model="newTag.text"
            ng-model-options="{getterSetter: true}"
            ng-keydown="eventHandlers.input.keydown($event)"
